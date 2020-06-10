@@ -5,17 +5,7 @@ Steps:
 
 1) open up Windows PowerShell, and issue the following commands:
     
-    pip install mapbox
-    
-    pip install pprint
-    
-    pip install crl
-    
-    pip install xlrd
-    
-    pip install pycurl
-    
-    pip install urrlib3
+    pip install -r requirements.txt
     
 2) Make an account on mapbox.com, and from this page: https://account.mapbox.com/ copy the access token
 3) paste this key into a file named "key.txt", and place it in this folder

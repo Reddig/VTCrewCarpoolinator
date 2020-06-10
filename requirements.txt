@@ -1,0 +1,6 @@
+mapbox
+pprint
+curl
+xlrd
+pycurl
+urllib3
