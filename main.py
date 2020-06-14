@@ -1,9 +1,10 @@
 import requests, mapbox, pycurl, certifi,json, urllib.parse, pprint, person, xlrd
 from io import BytesIO 
+from pygametest import pygame_plot
 
 api_key = open("key.txt", "r").read()
-# print(api_key)
 pp = pprint.PrettyPrinter(indent=4)
+
 def curl_and_ret_resp(url):
 	b_obj = BytesIO() 
 	crl = pycurl.Curl() 
@@ -25,7 +26,14 @@ def curl_and_ret_resp(url):
 
 	resp = get_body.decode('utf8')
 	return resp
+
 def coords_from_addr(addr, bias_to_blacksburg=True):
+	'''
+	Returns coordinates of address in (long, lat) format (ie: x,y)
+
+	Args:
+		addr:
+	'''
 
 	addr = urllib.parse.quote(addr)
 
@@ -38,7 +46,7 @@ def coords_from_addr(addr, bias_to_blacksburg=True):
 	resp = curl_and_ret_resp(url)
 	data = json.loads(resp)
 	
-	# print(pp.pprint(data))
+	#print(pp.pprint(data))
 	return data['features'][0]['geometry']['coordinates']
 
 # source = input()
@@ -66,21 +74,22 @@ def read_excel(fname):
 	for i in range (1, sheet.nrows):
 		p = None
 		# print(sheet.cell_value(i,0))
-		if sheet.cell_value(i,2) == "Yes":
-			p = person.Person(\
-				sheet.cell_value(i,0),\
-				sheet.cell_value(i,1),\
-				True,\
-				seats=sheet.cell_value(i,3),\
-				mpg=sheet.cell_value(i,4))
-		else:
-			p = person.Person(\
-				sheet.cell_value(i,0),\
-				sheet.cell_value(i,1))
+		# if sheet.cell_value(i,2) == "Yes":
+		# 	p = person.Person(\
+		# 		sheet.cell_value(i,0),\
+		# 		sheet.cell_value(i,1),\
+		# 		True,\
+		# 		seats=sheet.cell_value(i,3),\
+		# 		mpg=sheet.cell_value(i,4))
+		# else:
+		p = person.Person(\
+			sheet.cell_value(i,0),\
+			sheet.cell_value(i,1))
 		people.append(p)
 	return people
-def find_shortest(people, drivers):
-	for d in drivers:
+	
+# def find_shortest(people, drivers):
+# 	for d in drivers:
 		
 
 p = person.Person("Colin", "")
@@ -88,9 +97,14 @@ p2 = person.Person("Greta", "")
 # trip = trip_time(p.addr,p2.addr)
 # print(pp.pprint(trip))
 
-people = read_excel("Address Sheet_CR.xlsx")
-drivers = []
-for p in people:
-	if p.is_driver:
-		drivers.append(p)
+# people = read_excel("Address Sheet_CR.xlsx")
+# drivers = []
+# for p in people:
+# 	if p.is_driver:
+# 		drivers.append(p)
 
+if __name__ == "__main__":
+	print('We are in main')
+	peoples = read_excel("people.xlsx")
+	peoples_coords = [coords_from_addr(p.addr) for p in peoples]
+	print(peoples_coords)
